@@ -1,0 +1,22 @@
+#content .content-zs {
+  width: 95%;
+  margin: 0 auto;
+  margin-top: 10px;
+  /*font-size: large;*/
+  font-size: medium;
+  font-family: Arial;
+  overflow-x: auto; }
+
+#content .content-wrap {
+  font-family: "Courier New";
+  overflow-x: auto;
+  word-break:break-all;
+}
+
+td {
+  text-align: center;
+}
+
+.text {
+  text-align:center;
+}

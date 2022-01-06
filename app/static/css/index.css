@@ -1,0 +1,39 @@
+#content .content .row-item {
+  width: 80%;
+  margin-bottom: 20px; }
+
+#content .content {
+  font-family: "Courier New";
+  width: 90%;
+
+  /*scroll-margin-left: 40px*/
+}
+
+#content .text {
+  font-family: "Courier New";
+  width: 95%;
+  margin: 0 auto;
+  /*font-size: large;*/
+  font-size: medium;
+  overflow-x: auto;
+}
+
+#content .content-zs {
+  width: 95%;
+  margin: 0 auto;
+  margin-top: 10px;
+  /*font-size: large;*/
+  font-size: medium;
+  font-family: Arial;
+  overflow-x: auto; }
+
+#content .content{
+  margin: auto;
+}
+
+#content .content .err-msg {
+  color: red; }
+
+.texts {
+  text-align:center;
+}

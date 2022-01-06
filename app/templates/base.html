@@ -1,0 +1,49 @@
+<!--
+ * @Date: 2021-12-07 10:01:41
+ * @LastEditTime: 2021-12-09 13:04:07
+ * @Description: file content
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>HNOXPred | {{data.title}}</title>
+  <link rel="stylesheet" href="/static/css/elementui.css">
+  <script src="/static/js/jquery-3.3.1.min.js"></script>
+  {%- if g.isDev -%}
+  <script src="/static/js/vue.js"></script>
+  {%- else -%}
+  <script src="/static/js/vue.min.js"></script>
+  {%- endif -%}
+  <script src="/static/js/elementui.js"></script>
+  <link type="text/css" rel="styleSheet" href="/static/css/base.css" />
+  <link rel="shortcut icon" href="{{ url_for('static', filename='tag_logo.ico') }}">
+  <script src="/static/js/moment.js"></script>
+  <script src="/static/js/public.js"></script>
+  {%- block my_style -%}
+  {%- endblock my_style -%}
+</head>
+
+<body>
+  <div class="header">
+    <h1 style="margin-right:20px;margin-left: 50px;">
+      <font style="vertical-align: inherit;font-size:70px;">
+{#        <font style="vertical-align: inherit;">HNOX Pred#}
+{#        </font>#}
+      </font>
+    </h1>
+{#    <img src="/static/images/head-image0.ico" style="height:200px;width:400px"/>#}
+    <img src="static/images/head-image0.ico"  style="height:200px;width:400px"/>
+  </div>
+  <div class="wrap" id="app">
+    {%- block content -%}
+    {%- endblock content -%}
+  </div>
+  <footer>
+    Copyright © Department of Biology, College of Science and Technology, Wenzhou-Kean University
+  </footer>
+</body>
+
+</html>

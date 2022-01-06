@@ -1,0 +1,149 @@
+{%- extends "base.html" -%}
+{%- block my_style -%}
+<link type="text/css" rel="styleSheet" href="/static/css/index.css" />
+<script src="/static/js/spark-md5.min.js"></script>
+{%- endblock my_style -%}
+{%- block content -%}
+<div id="content">
+  <div class="content-zs">
+    <br><font size="6">HNOXPred</font>
+      <br><font size="5"><u>Pred</u>iction of <u>H</u>eme-<u>N</u>itric <u>Ox</u>ide/<u>Ox</u>ygen domains</font>
+    <br>
+    <br>This web server predicts gas sensing H-NOX proteins from amino acid sequence.
+        Heme-Nitric oxide/Oxygen (H-NOX) proteins are ancient conserved gas sensing hemoproteins found in diverse
+        organisms ranging from bacteria to eukaryotes.
+    <br>
+    <br>Gas sensing complex multi-functional proteins containing only the conserved amino acids at the heme centers of
+        H-NOX proteins have been recently identified through a motif-based approach. Based on experimental data and
+        H-NOX candidates reported in the literature, HNOXPred is created to automate and facilitate the identification
+        of similar H-NOX centers across systems.
+    <br>
+    <br>
+{#    <HR style="FILTER: alpha(opacity=40,finishopacity=0,style=2)" width="100%" color=#7979d7 SIZE=1>#}
+{#    <HR style="FILTER: progid:DXImageTransform.Microsoft.Shadow(color:rgba(88,83,83,0.07),direction:145,strength:15)"#}
+{#        width="100%" color=#987cb9 SIZE=1>#}
+{#    <div class="texts"><font size="5">Instruction</font></div>#}
+    <font size="5">Instruction</font>
+    <br>
+    <br>The software takes a single or multiple amino acid sequence and returns predicted H-NOX centers accompanied by
+        HNOX<sub>SCORES</sub> scaled from 0 to 1, where 1 is closest to the mean of H-NOX proteins in HNOXPred database.
+    <br>
+      <br>Enter single letter amino acid codes in FASTA format:</div>
+    <!-- <br>
+    <br>Please enter single letter amino acid codes in FASTA format and select if co-factor binding
+    (Mg<sup>2+</sup>/Mn<sup>2+</sup>) is required. The amino acid implicated in co-factor binding is found at 0-3
+    positions downstream of the GCC.
+    <br>
+    <br>Requirement for Mg<sup>2+</sup>/Mn<sup>2+</sup> co-factor
+    <el-radio-group v-model="form.select">
+      <el-radio :label="'N'">No</el-radio>
+      <el-radio :label="'Y'">Yes</el-radio>
+    </el-radio-group> -->
+    <div class="row-item text">
+      <br>>sp|Q1PDI2|DGK4_ARATH Diacylglycerol kinase 4 OS=Arabidopsis thaliana OX=3702 GN=DGK4 PE=1 SV=1
+      <br>MYGFVNHALELLVIRNYGPEVWEDIKKEAQLDEEGQFLVRIIYDDSKTYDLVAAASKVLNLNAGEILQMFGKMFFVFCQESGYDTILRVLGSNVREFLQN
+      <br>LDALHDHLATIYPGMRAPSFRCTDAEKGKGLILHYYSEREGLQDIVIGIIKTVAQQIHGTEIDMKVIQQRNEECDHTQFLIEEKESKEEDFYEDLDRFEE
+      <br>NGTQESRISPYTFCKAFPFHIIFDRNLVVTQCGNAIYRVLPQLQPGNCSLLSVFSLVRPHIDISFHGILSHINTVFVLRSKEGLLDVEKLECEDELTGAE
+      <br>ISCLRLKGQMIYLPEADSILFLCSPSVMNLDDLTRRGLYLSDIPLHDATRDLVLLGEQFREEYKLTQELEILTDRLQLTLRALEDEKKKTDTLLYSVLPP
+      <br>SVANELRHKRPVPAKRYDNVTILFSGIVGFNAFCSKHASGEGAMKIVNLLNDLYTRFDTLTDSRKNPFVYKVETVGDKYMTVSGLPEPCIHHARSICHLA
+      <br>LDMMEIAGQVQVDGESVQITIGIHTGEVVTGVIGQRMPRYCLFGNTVNLTSRTETTGEKGKINVSEYTYRCLMSPENSDPLFHLEHRGPVSMKGKKEPMQ
+      <br>VWFLSR
+    </div>
+    <div class="content-zs">
+    <div class="row-item">
+      <el-input @change="change" @blur="blur" type="textarea" :rows="10"
+        placeholder="Please enter single letter amino acid codes in FASTA format" v-model.trim="form.inputValue">
+      </el-input>
+      <div v-if="showErr" class="err-msg">Please enter single letter amino acid codes in FASTA format</div>
+    </div>
+    <br>
+    <div class="row-item">
+      <el-button v-loading="loading" @click="submit" type="primary">Submit</el-button>
+    </div>
+    <br>If you find HNOXPred useful for your work, please cite:
+    <br>
+{#      <a#}
+{#      href="https://academic.oup.com/bioinformatics/advance-article-abstract/doi/10.1093/bioinformatics/bty067/4840580?redirectedFrom=fulltext">Xu#}
+{#      N, Fu D, Li S, Wang Y &amp; Wong A (2018). Bioinformatics, DOI: 10.1093/bioinformatics/bty067</a>#}
+    <br>
+    <br>HNOXPred was built based on previous work published in:
+    <br><a href="https://www.sciencedirect.com/science/article/abs/pii/S1360138521000686?via%3Dihub">
+      Wong A, Hu N, Tian X, Yang Y & Gehring C (2021). Trends Plant Sci 26(9), 885-897</a>
+    <br><a href="https://www.sciencedirect.com/science/article/pii/S1360138521000686?via%3Dihub">
+      Wong A, Tian X, Yang Y & Gehring C (2021). Mol Plant 14(2), 195-197</a>
+{#    <br><a href="https://www.frontiersin.org/articles/10.3389/fbioe.2015.00082/full">Wong A, Gehring C &amp; Irving HR#}
+{#      (2015). Front Bioeng Biotechnol 82, 1-8</a>#}
+{#    <br><a href="https://biosignaling.biomedcentral.com/articles/10.1186/1478-811X-11-48">Wong A &amp; Gehring C#}
+{#      (2013). Cell Commun Signal, 11(1), 48</a>#}
+{#    <br><a href="https://link.springer.com/protocol/10.1007/978-1-62703-441-8_13">Wong A &amp; Gehring C (2013).#}
+{#      Methods Mol Biol, 1016, 195-205, Humana Press</a>#}
+{#    <br><a href="http://www.jbc.org/content/278/8/6490.full">Ludidi N &amp; Gehring C (2003). J Biol Chem 278(8),#}
+{#      6490-6494</a>#}
+    <br>
+    <br>This tool is still under development and the HNOX<sub>SCORES</sub> will be revised as new experimental data becomes
+        available. Additional features and improvements are forthcoming.
+{#    <br>#}
+{#    <br>We also provide a trial service for the prediction of adenylyl cyclase (AC) functional centers. Please click#}
+{#    <a href="http://HNOXPred.com/acpred">here</a> to access the ACPred webtool.#}
+    <br>
+    <br>Please contact us at <a href="mailto:alwong@kean.edu">alwong@kean.edu</a> if you have any questions or comments.
+  </div>
+</div>
+</div>
+<script>
+  var appContent = new Vue({
+    el: '#content',
+    data: {
+      showErr: false,
+      loading: false,
+      form: {
+        inputValue: undefined,
+        hash: undefined,
+      },
+    },
+    mounted() {
+      const form = window.sessionStorage.getItem('formData')
+      if (form) {
+        this.form = JSON.parse(form)
+      }
+    },
+    methods: {
+      change(val) {
+        if (!val) {
+          window.sessionStorage.clear()
+        }
+      },
+      blur() {
+        if (!this.form.inputValue) {
+          this.showErr = true;
+          return
+        }
+        this.showErr = false;
+      },
+      async submit(num = 1) {
+        this.loading = true
+        if (!this.form.inputValue) {
+          this.showErr = true;
+          this.loading = false;
+          window.message("error", "Please enter single letter amino acid codes in FASTA format")
+          return
+        }
+        const hash = SparkMD5.hash(this.form.inputValue)
+        this.form.hash = hash
+        window.sessionStorage.setItem('formData', JSON.stringify(this.form))
+        try {
+          const res = await window.request('POST', "/api/submitPrediction", this.form);
+          window.location.href = "".concat(window.location.origin, "/predictionResult/", hash)
+        } catch (e) {
+          console.log(e)
+          window.message("error", e.msg || "submit failed")
+        } finally {
+          this.loading = false
+        }
+
+
+      },
+    }
+  })
+</script>
+{%- endblock content -%}

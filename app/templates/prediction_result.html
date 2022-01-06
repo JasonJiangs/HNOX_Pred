@@ -1,0 +1,245 @@
+{%- extends "base.html" -%}
+{%- block my_style -%}
+<link type="text/css" rel="styleSheet" href="/static/css/prediction_result.css" />
+{%- endblock my_style -%}
+{%- block content -%}
+<div id="content">
+  <div class="content-zs">
+    <br>
+    <div class="text"><font size="5">Interpretation Guide</font></div>
+    <br>A typical HNOX center consists of 33-37 amino acids. HNOXPred currently implements the HNOX motif:
+        HX(27,31)YXSXR in its algorithm. The server first detects the presence of conserved key functional amino acids
+        (H, Y, S, and R) before calculating the physicochemical properties of intermediary amino acids. The server then
+        generates HNOX<sub>SCORES</sub> for each amino acid property in addition to an overall mean for each positive
+        hit.
+    <br>
+    <br>HNOX<sub>SCORES</sub> are scaled 0-1, where 1 is closest to the population mean in HNOXPred database.
+    <font style="color:#009900;">Green</font> HNOX<sub>SCORES</sub> represent high confidence and
+    <font style="color:#ff0000;">red</font> ones represent low confidence. We recommend user to select hits with at
+      least two <font style="color:#009900;">green</font> physicochemical values in addition to a <font style="color:#009900;">green</font> mean value.
+        Good candidates should contain no <font style="color:#ff0000;">red</font> HNOX<sub>SCORES</sub>.
+    <br>
+    <br>
+{#    <div class="text"><font size="5">Result Presented</font></div>#}
+{#    <br>The results are interpreted as graphs which show the deviation of amino acids at each position of the HNOX from#}
+{#    the population mean. The further away from the '0 line', the larger the difference from HNOX population. The hits#}
+{#    are#}
+{#    also available for download as excel sheet.#}
+  </div>
+  {%- for item in data.res -%}
+  {% set outer_loop = loop %}
+  <div class="content content-zs">
+    <title>HNOXPred</title>
+    <div><b>{{item.text.title}}</b>
+    </div>
+    {%- if item.table -%}
+    <div>
+      <div class="content-wrap">
+        {%- for row in item.text.textlist -%}
+        {%- for col in row -%}
+        {%- if not col.bold -%}
+        {{col.value|safe}}
+        {%- else -%}
+        <b>
+          <font style="color:{{col.color or ''}};">{{col.value|safe}}</font>
+        </b>
+        {%- endif -%}
+        {%- endfor -%}
+        <br>
+        {%- endfor -%}
+      </div>
+      <div class="content-table"><br>Hits found:
+        <br>
+        <table border="1" id="myTable{{outer_loop.index}}">
+          <tbody>
+            <tr>
+              <th>Hits<button onclick="sortTable(0,{{outer_loop.index}})">▼</button></th>
+              <th>Positions</th>
+              <th>HNOX Sequences</th>
+              <th>HNOX Hydrophobicity<button onclick="sortTable(3,{{outer_loop.index}})">▼</button></th>
+              <th>HNOX Molecular Weight<button onclick="sortTable(4,{{outer_loop.index}})">▼</button></th>
+              <th>HNOX Isoelectric Point<button onclick="sortTable(5,{{outer_loop.index}})">▼</button></th>
+              <th>HNOX Mean<button onclick="sortTable(6,{{outer_loop.index}})">▼</button>
+              </th>
+            </tr>
+            {%- for row in item.table -%}
+            <tr>
+              <td>{{row.Hit.value}}</td>
+              <td>{{row.Position.value}}</td>
+              <td>
+                <b>
+                  <font style="color:{{row.HNOXSequence.color}};">{{row.HNOXSequence.value|safe}}</font>
+                </b>
+              </td>
+              <td class="hnox_hy" style="color: {{row.HNOXHydrophobicity.color}};">{{row.HNOXHydrophobicity.value}}</td>
+              <td class="hnox_wt" style="color: {{row.HNOXMolecularWeight.color}};">{{row.HNOXMolecularWeight.value}}
+              </td>
+              <td class="hnox_pi" style="color: {{row.HNOXIsoelectricPoint.color}};">{{row.HNOXIsoelectricPoint.value}}
+              </td>
+              <td class="gcc" style="color: {{row.HNOXMean.color}};">{{row.HNOXMean.value}}</td>
+            </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {%- else -%}
+    <div style="color:red">
+      No sequence match
+    </div>
+    {%- endif -%}
+{#      <div class="content-desc">Note: HNOX<sub>SCORES</sub> are scaled 0-1, where <font style="color:#009900;">green#}
+{#      </font>#}
+{#          represents high confidence and <font style="color:#FF0000;">red</font>. Positive hits assigned as <b>very likely H-NOX</b>,#}
+{#          should contain two or more green physicochemical values in addition to green HNOX<sub>MEAN</sub> and no red#}
+{#          values, and they are highly recommended for selection. Hits containing green HNOX<sub>MEAN</sub> and/or two#}
+{#          green individual HNOX parameters and no red values are assigned <b>likely H-NOX</b>; hits containing all black#}
+{#          values or only one green HNOX parameter and no red values are assigned <b>unlikely H-NOX</b>; and hits containing#}
+{#          at least one red HNOX parameter are assigned <b>highly unlikely H-NOX</b>.#}
+{#      </font>#}
+{#      <br>#}
+{#      <br>................................................................................................................................................................................................................................................<br>#}
+{#      <br>#}
+{#    </div>#}
+      <div class="content-desc"><br>................................................................................................................................................................................................................................................
+{#      </font>. Hits with green HNOX Mean values, two or more green HNOX physicochemical values and no red HNOX values#}
+{#      are#}
+{#      highly#}
+{#      recommended.#}
+{#      <br>................................................................................................................................................................................................................................................#}
+    </div>
+  </div>
+  {%- endfor -%}
+      <div class="content-zs"><b>Note:</b> HNOX<sub>SCORES</sub> are scaled 0-1, where <font style="color:#009900;">green
+          </font>
+              represents high confidence and <font style="color:#FF0000;">red</font>. Positive hits assigned as <b>very likely H-NOX</b>,
+              should contain two or more <font style="color:#009900;">green</font> physicochemical values in addition to
+              <font style="color:#009900;">green</font> HNOX<sub>MEAN</sub> and no <font style="color:#FF0000;">red</font>
+              values, and they are highly recommended for selection. Hits containing <font style="color:#009900;">green</font>
+              HNOX<sub>MEAN</sub> and/or two <font style="color:#009900;">green</font> individual HNOX parameters and no
+              <font style="color:#FF0000;">red</font> values are assigned <b>likely H-NOX</b>; hits containing all black
+              values or only one <font style="color:#009900;">green</font> HNOX parameter and no <font style="color:#FF0000;">red</font>
+              values are assigned <b>unlikely H-NOX</b>; and hits containing at least one <font style="color:#FF0000;">red</font>
+              HNOX parameter are assigned <b>highly unlikely H-NOX</b>.
+      </div>
+  <div class="content-zs">
+    {%- if data.files.result_colored -%}
+    <br><a href="{{data.files.result_colored}}">Download Colored Result</a>
+    {%- endif -%}
+{#    {%- if data.files.result_color -%}#}
+{#    <br><a href="{{data.files.result_color}}">Download as Result Color</a>#}
+{#    {%- endif -%}#}
+    {%- if data.files.result_noncolored -%}
+    <br><a href="{{data.files.result_noncolored}}">Download Original Non-colored Result</a>
+    {%- endif -%}
+    <br>
+    <br>If you find HNOXPred useful for your work, please cite:
+    <br>
+{#      <a#}
+{#      href="https://academic.oup.com/bioinformatics/advance-article-abstract/doi/10.1093/bioinformatics/bty067/4840580?redirectedFrom=fulltext">Xu#}
+{#      N, Fu D, Li S, Wang Y &amp; Wong A (2018). Bioinformatics, DOI: 10.1093/bioinformatics/bty067</a>#}
+    <br>
+    <br>HNOXPred was built based on previous work published in:
+    <br><a href="https://www.sciencedirect.com/science/article/abs/pii/S1360138521000686?via%3Dihub">
+      Wong A, Hu N, Tian X, Yang Y & Gehring C (2021). Trends Plant Sci 26(9), 885-897</a>
+    <br><a href="https://www.sciencedirect.com/science/article/pii/S1360138521000686?via%3Dihub">
+      Wong A, Tian X, Yang Y & Gehring C (2021). Mol Plant 14(2), 195-197</a>
+{#    <br><a href="https://www.frontiersin.org/articles/10.3389/fbioe.2015.00082/full">Wong A, Gehring C &amp; Irving HR#}
+{#      (2015). Front Bioeng Biotechnol 82, 1-8</a>#}
+{#    <br><a href="https://biosignaling.biomedcentral.com/articles/10.1186/1478-811X-11-48">Wong A &amp; Gehring C#}
+{#      (2013). Cell Commun Signal, 11(1), 48</a>#}
+{#    <br><a href="https://link.springer.com/protocol/10.1007/978-1-62703-441-8_13">Wong A &amp; Gehring C (2013).#}
+{#      Methods Mol Biol, 1016, 195-205, Humana Press</a>#}
+{#    <br><a href="http://www.jbc.org/content/278/8/6490.full">Ludidi N &amp; Gehring C (2003). J Biol Chem 278(8),#}
+{#      6490-6494</a>#}
+    <br>
+    <br>This tool is still under development and the HNOX<sub>SCORES</sub> will be revised as new experimental data becomes
+        available. Additional features and improvements are forthcoming.
+{#    <br>#}
+{#    <br>We also provide a trial service for the prediction of adenylyl cyclase (AC) functional centers. Please click#}
+{#    <a href="http://HNOXPred.com/acpred">here</a> to access the ACPred webtool.#}
+    <br>
+    <br>Please contact us at <a href="mailto:alwong@kean.edu">alwong@kean.edu</a> if you have any questions or comments.
+  </div>
+</div>
+<script>
+  function sortTable(index, num) {
+    var table, rows, switching, i, x, y, shouldSwitch;
+    table = document.getElementById("myTable".concat(num.toString()));
+    console.log(table);
+    switching = true;
+    /*Make a loop that will continue until
+    no switching has been done:*/
+    while (switching) {
+      //start by saying: no switching is done:
+      switching = false;
+      rows = table.rows;
+      /*Loop through all table rows (except the
+      first, which contains table headers):*/
+      for (i = 1; i < (rows.length - 1); i++) {
+        //start by saying there should be no switching:
+        shouldSwitch = false;
+        /*Get the two elements you want to compare,
+        one from current row and one from the next:*/
+        x = rows[ i ].getElementsByTagName("TD")[ index ];
+        y = rows[ i + 1 ].getElementsByTagName("TD")[ index ];
+        //check if the two rows should switch place:
+        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+          //if so, mark as a switch and break the loop:
+          shouldSwitch = true;
+          break;
+        }
+      }
+      if (shouldSwitch) {
+        /*If a switch has been marked, make the switch
+        and mark that a switch has been done:*/
+        rows[ i ].parentNode.insertBefore(rows[ i + 1 ], rows[ i ]);
+        switching = true;
+      }
+    }
+  }
+  var appContent = new Vue({
+    el: '#content',
+    data: {
+
+    },
+    mounted: async function () {
+      this.loading = true;
+    },
+    computed: {
+
+    },
+    methods: {
+      async loadIDs(row, index) {
+        try {
+          const res = await window.request('GET', "/api/queryRelationIds");
+          if (res.data.length) {
+            this.selectOptions = res.data;
+          }
+        } catch (error) {
+          this.message("error", error.msg || "获取失败")
+        } finally {
+          this.loading = false
+        }
+      },
+
+      async loadData() {
+        this.loading = true
+        const form = Object.assign({}, this.searchForm)
+        if (!form.relation_id) {
+          form.relation_id = undefined;
+        }
+        try {
+          const res = await window.request('POST', "/api/queryOrder", form);
+          this.tableData = res.data
+          this.searchForm.total = res.total
+        } catch (error) {
+          window.message("error", error.msg || "请求失败")
+        } finally {
+          this.loading = false
+        }
+      },
+    }
+  })
+</script>
+{%- endblock content -%}
