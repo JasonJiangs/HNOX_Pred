@@ -4,4 +4,4 @@ With the website:
 https://www.hnoxpred.com/
 
 The description:
-https://www.jasonjsy.xyz/software/hnoxpred/
+https://jasonjiangs.github.io/publication/2022-bioinformatics
