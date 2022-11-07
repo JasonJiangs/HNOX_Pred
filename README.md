@@ -2,9 +2,13 @@
 Source Code for HONX Pred
 
 · Algorithm: Python
+
 · Backend: Flask
+
 · Frontend: Javascript + HTML/CSS
+
 · Database: MySQL
+
 · Deployment: Nginx
 
 With the website:
