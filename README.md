@@ -1,5 +1,5 @@
-# HNOX_Pred
-Source Code for HONX Pred
+# HNOX_Pred Website
+Source Code for HONXPred
 
 · Algorithm: Python
 
