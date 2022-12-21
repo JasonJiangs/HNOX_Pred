@@ -9,7 +9,7 @@ Source Code for HONXPred
 
 · Database: MySQL
 
-· Deployment: Nginx
+· Deployment: Nginx + Tencent Cloud
 
 With the website:
 https://www.hnoxpred.com/
