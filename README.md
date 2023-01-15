@@ -1,9 +1,9 @@
 # HNOX_Pred Website
 Source Code for HONXPred
 
-· Algorithm: Python
+· Algorithm: Python + Sequence Analysis
 
-· Backend: Flask
+· Backend: Flask Framework
 
 · Frontend: Javascript + HTML/CSS
 
